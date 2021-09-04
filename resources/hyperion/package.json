@@ -1,0 +1,22 @@
+{
+  "name": "hyperion",
+  "version": "1.0.0",
+  "description": "Interface entre Jeedom et Hyperion ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mathman",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "crypto-random-string": "^3.3.0",
+    "express": "^4.17.1",
+    "fast-xml-parser": "^3.17.6",
+    "npid": "^0.4.0",
+    "passport": "^0.4.1",
+    "passport-http-bearer": "^1.0.1",
+    "websocket": "^1.0.33"
+  }
+}
