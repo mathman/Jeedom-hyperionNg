@@ -1,3 +1,19 @@
-# Plugin template
+# Plugin HyperionNg
 
-La documentation pour utiliser le template de plugin se trouve [ici](https://doc.jeedom.com/fr_FR/dev/)
+## Utilisation :
+
+Sur votre serveur Hyperion :
+
+Lorsque votre serveur Hyperion est installé et démarré vous pouvez activer ou ne pas activer l'authentification.
+
+Si vous avez activé l'authentification vous devez ajouter un token depuis l'onglet "Services réseaux" puis "Gestion des tokens".
+
+Une popup va s'afficher avec le token. Gardez le pour la suite.
+
+Sur Jeedom :
+
+Dans la page de configuration du plugin vous devez renseigner le port que le deamon va utiliser pour communiquer avec Jeedom (Choisissez un port non utilisé par un service existant).
+
+Lorsque vous ajouter un serveur vous devez renseigner l'adresse IP et le port de communication du serveur (Onglet "Configuration web > Port HTTPS" dans Hyperion).
+
+Si vous avez activé l'authentification sur votre serveur Hyperion vous devez renseigner le token précédement crée.
