@@ -11,10 +11,10 @@
 	"hasDependency" : true,
 	"hasOwnDeamon" : true,
 	"maxDependancyInstallTime" : 0,
-	"changelog" : "https://jeedom.github.io/plugin-template/#language#/changelog",
-	"documentation" : "https://jeedom.github.io/plugin-template/#language#/",
+	"changelog" : "https://mathman.github.io/Jeedom-hyperionNg/fr_FR/changelog",
+	"documentation" : "https://mathman.github.io/Jeedom-hyperionNg/fr_FR/index",
 	"link" : {
-		"forum":"Lien vers le forum"
+		"forum":"https://community.jeedom.com/"
 	},
 	"language" : ["fr_FR","en_US","de_DE","sp_SP","ru_RU", "pt_PT"],
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile","v4"]
