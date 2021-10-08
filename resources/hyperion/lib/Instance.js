@@ -112,9 +112,8 @@ class Instance {
 		return false;
 	}
 
-	onMessage(msg) {
+	onMessage(messageParsed) {
 		
-		var messageParsed = JSON.parse(msg.utf8Data);
 		switch (messageParsed.command) {
 			case 'instance-switchTo':
 				this.onInstanceSwitched(messageParsed);
