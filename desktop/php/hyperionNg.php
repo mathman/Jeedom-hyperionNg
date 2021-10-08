@@ -131,7 +131,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Port}}</label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="eqLogicAttr configuration form-control" id="sel_port" data-l1key="configuration" data-l2key="port" placeholder="8092"/>
+                                    <input type="text" class="eqLogicAttr configuration form-control" id="sel_port" data-l1key="configuration" data-l2key="port" placeholder="19444"/>
                                 </div>
                             </div>
                             <div class="form-group">
