@@ -15,6 +15,6 @@
     "fast-xml-parser": "^3.17.6",
     "npid": "^0.4.0",
     "passport": "^0.4.1",
-    "passport-http-bearer": "^1.0.1",
+    "passport-http-bearer": "^1.0.1"
   }
 }
