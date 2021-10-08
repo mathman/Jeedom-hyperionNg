@@ -1143,7 +1143,7 @@ class hyperionNgCmd extends cmd {
         if (!is_object($eqLogic) || $eqLogic->getIsEnable() != 1) {
             throw new Exception(__('Equipement desactivé impossible d\éxecuter la commande : ' . $this->getHumanName(), __FILE__));
         }
-		log::add(__CLASS__,'debug','command: '.$this->getLogicalId().' parameters: '.json_encode($_options));
+		log::add('hyperionNg','debug','command: '.$this->getLogicalId().' parameters: '.json_encode($_options));
 		switch ($this->getLogicalId()) {
 			case "refresh":
 				$eqLogic->updateServer();

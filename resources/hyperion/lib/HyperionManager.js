@@ -1,4 +1,3 @@
-const axios = require('axios');
 const parser = require('fast-xml-parser');
 
 const Hyperion = require('./Hyperion');
