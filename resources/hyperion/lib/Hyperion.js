@@ -1,4 +1,3 @@
-const WebSocketClient = require('websocket').client;
 const Instance = require('./Instance');
 const Connection = require('./Connection');
 
@@ -109,9 +108,8 @@ class Hyperion {
 		return true;
 	}
 	
-	onMessage(msg) {
+	onMessage(messageParsed) {
 		
-		var messageParsed = JSON.parse(msg.utf8Data);
 		switch (messageParsed.command) {
 			case 'serverinfo':
 				this.registerInstances(messageParsed.info.instance);

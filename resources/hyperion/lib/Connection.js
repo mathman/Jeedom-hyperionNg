@@ -1,4 +1,4 @@
-const WebSocketClient = require('websocket').client;
+const net = require('net');
 const { EventEmitter } = require('events');
 const cryptoRandomString = require('crypto-random-string');
 
@@ -10,59 +10,46 @@ class Connection extends EventEmitter {
         this.host = host;
 		this.port = port;
 		this.authenticated = false;
+		this.connected = false;
 		this.token = null;
+		this.message = '';
 		
-		this.wsClient = new WebSocketClient({tlsOptions: {rejectUnauthorized: false}});
-		this.connection = null;
+		this.client = new net.Socket();
 		var self = this;
-		this.wsClient.on('connectFailed', function(error) {
-			
-			self.emit('connectFailed', error);
-		});
-		this.wsClient.on('connect', function(connection) {
-			
-			self.connection = connection;
-			self.connection.on('error', function(error) {
-			
-				self.closeConnection();
-				self.emit('connection error', error);
-			});
-			self.connection.on('close', function() {
-			
-				self.closeConnection();
-				self.emit('connection close');
-			});
-			self.connection.on('message', function(message) {
+		this.client.on('connect', function(connection) {
 
-				self.onMessage(message);
-				self.emit('message', message);
-			});
-			
 			self.onConnected();
 			self.emit('connected');
+		});
+		this.client.on('error', function(error) {
+			
+			self.closeConnection();
+			self.emit('connection error', error);
+		});
+		this.client.on('close', function() {
+			
+			self.closeConnection();
+			self.emit('connection close');
+		});
+		this.client.on('data', function(message) {
+
+			self.onMessage(message);
 		});
     }
 	
 	closeConnection() {
 		
-		if (typeof this.connection !== 'undefined' && this.connection !== null) {
-			if (this.connection.connected) {
-				
-				this.connection.close();
-			}
+		if (typeof this.client !== 'undefined' && this.client !== null) {
+			this.client.end();
 		}
-		this.connection = null;
 		this.authenticated = false;
+		this.connected = false;
 		this.token = null;
 	}
 	
 	isConnected() {
 		
-		if (typeof this.connection !== 'undefined' && this.connection !== null) {
-			
-			return this.connection.connected;
-		}
-		return false;
+		return this.connected;
 	}
 	
 	isAuthenticated() {
@@ -72,16 +59,25 @@ class Connection extends EventEmitter {
 	
 	onMessage(msg) {
 		
-		var messageParsed = JSON.parse(msg.utf8Data);
-		switch (messageParsed.command) {
-			case 'authorize-tokenRequired':
-				this.onTokenRequiredMessage(messageParsed);
-				break;
-			case 'authorize-login':
-				this.onAuthorizeLogin(messageParsed);
-				break;
-			default:
-				break;
+		this.message += msg.toString();
+		try {
+			
+			var messageParsed = JSON.parse(this.message);
+			switch (messageParsed.command) {
+				case 'authorize-tokenRequired':
+					this.onTokenRequiredMessage(messageParsed);
+					break;
+				case 'authorize-login':
+					this.onAuthorizeLogin(messageParsed);
+					break;
+				default:
+					this.emit('message', messageParsed);
+					break;
+			}
+			this.message = '';
+		}
+		catch (e) {
+			
 		}
 	}
 	
@@ -92,24 +88,22 @@ class Connection extends EventEmitter {
 			
 			if (!this.isConnected()) {
 				
-				this.wsClient.connect('wss://' + this.host + ':' + this.port + '/');
+				this.client.connect(this.port, this.host);
 			}
 		}
 	}
 	
 	onConnected() {
 		
-		if (this.connection.connected) {
-			
-			this.requestAuthorization();
-		}
+		this.connected = true;
+		this.requestAuthorization();
 	}
 	
 	requestAuthorization() {
 		
 		if (this.isConnected()) {
 			
-			this.connection.send('{"command" : "authorize","subcommand" : "tokenRequired"}\n');
+			this.client.write('{"command" : "authorize","subcommand" : "tokenRequired"}\n');
 		}
 	}
 	
@@ -128,7 +122,7 @@ class Connection extends EventEmitter {
 		
 		if (this.isConnected()) {
 			
-			this.connection.send('{"command" : "authorize","subcommand" : "login","token" : "' + this.token + '"}\n');
+			this.client.write('{"command" : "authorize","subcommand" : "login","token" : "' + this.token + '"}\n');
 		}
 	}
 	
@@ -160,7 +154,7 @@ class Connection extends EventEmitter {
 		
 		if (this.isConnected() && this.isAuthenticated()) {
 			
-			this.connection.send(command);
+			this.client.write(command);
 			return true;
 		}
 		return false;
