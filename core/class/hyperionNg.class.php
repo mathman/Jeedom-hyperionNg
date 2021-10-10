@@ -67,7 +67,12 @@ class hyperionNg extends eqLogic {
 		if (file_exists(jeedom::getTmpFolder(__CLASS__) . '/dependency')) {
             $return['state'] = 'in_progress';
         } else {
-			$return['state'] = (self::compilationOk()) ? 'ok' : 'nok';
+			if (is_dir(dirname(__FILE__) . '/../../resources/hyperion/node_modules') && self::compilationOk()) {
+				$return['state'] = 'ok';
+			}
+			else {
+				$return['state'] = 'nok';
+			}
 		}
 		return $return;
 	}
@@ -95,10 +100,9 @@ class hyperionNg extends eqLogic {
 				shell_exec(system::getCmdSudo() . 'rm -rf ' . $pid_file . ' 2>&1 > /dev/null');
 			}
 		}
-		$return['launchable'] = 'ok';
+		$return['launchable'] = 'nok';
         $port_server = config::byKey('port_server', __CLASS__);
 		if ($port_server == '') {
-            $return['launchable'] = 'nok';
             $return['launchable_message'] = __('Le port serveur n\'est pas configuré', __FILE__);
 		}
 		else {
