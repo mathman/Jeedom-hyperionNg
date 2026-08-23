@@ -6,7 +6,7 @@
 	},
 	"licence" : "AGPL",
 	"author" : "Mathman",
-	"require" : "3.3.39",
+	"require" : "4.2",
 	"category" : "multimedia",
 	"hasDependency" : true,
 	"hasOwnDeamon" : true,
